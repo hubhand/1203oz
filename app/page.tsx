@@ -7,6 +7,7 @@
  */
 
 import Link from "next/link";
+import { Suspense } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Droplet,
@@ -14,106 +15,63 @@ import {
   ShowerHead,
   Bath,
   ShoppingCart,
-  Star,
   ArrowRight,
+  Star,
 } from "lucide-react";
+import { getFeaturedProducts } from "@/lib/supabase/products";
+import ProductCard from "@/components/ProductCard";
+import { CATEGORIES } from "@/lib/constants/categories";
 
-export default function Home() {
-  // 카테고리 데이터
-  const categories = [
-    {
-      name: "샤워용품",
-      icon: ShowerHead,
-      description: "샤워기, 샤워 헤드, 샤워 커튼",
-      color: "bg-blue-50 dark:bg-blue-950",
-      iconColor: "text-blue-600 dark:text-blue-400",
-    },
-    {
-      name: "욕조용품",
-      icon: Bath,
-      description: "욕조, 목욕 가구, 욕조 액세서리",
-      color: "bg-purple-50 dark:bg-purple-950",
-      iconColor: "text-purple-600 dark:text-purple-400",
-    },
-    {
-      name: "세면대",
-      icon: Droplet,
-      description: "세면대, 수도꼭지, 거울",
-      color: "bg-cyan-50 dark:bg-cyan-950",
-      iconColor: "text-cyan-600 dark:text-cyan-400",
-    },
-    {
-      name: "액세서리",
-      icon: Sparkles,
-      description: "수건걸이, 선반, 수납함",
-      color: "bg-pink-50 dark:bg-pink-950",
-      iconColor: "text-pink-600 dark:text-pink-400",
-    },
-  ];
+export default async function Home() {
+  // 카테고리 아이콘 매핑
+  const categoryIcons = {
+    shower: ShowerHead,
+    bath: Bath,
+    sink: Droplet,
+    accessories: Sparkles,
+  };
 
-  // 인기 제품 데이터 (예시)
-  const featuredProducts = [
-    {
-      id: 1,
-      name: "프리미엄 샤워 헤드",
-      price: "89,000원",
-      originalPrice: "129,000원",
-      rating: 4.8,
-      reviews: 234,
-      image: "🚿",
-      badge: "인기",
+  // 카테고리 색상 매핑
+  const categoryColors = {
+    shower: {
+      bg: "bg-blue-50 dark:bg-blue-950",
+      icon: "text-blue-600 dark:text-blue-400",
     },
-    {
-      id: 2,
-      name: "스마트 수도꼭지",
-      price: "159,000원",
-      originalPrice: "199,000원",
-      rating: 4.9,
-      reviews: 156,
-      image: "💧",
-      badge: "신상품",
+    bath: {
+      bg: "bg-purple-50 dark:bg-purple-950",
+      icon: "text-purple-600 dark:text-purple-400",
     },
-    {
-      id: 3,
-      name: "욕조용 목베개",
-      price: "39,000원",
-      originalPrice: null,
-      rating: 4.7,
-      reviews: 89,
-      image: "🛁",
-      badge: null,
+    sink: {
+      bg: "bg-cyan-50 dark:bg-cyan-950",
+      icon: "text-cyan-600 dark:text-cyan-400",
     },
-    {
-      id: 4,
-      name: "벽걸이 수납 선반",
-      price: "49,000원",
-      originalPrice: "69,000원",
-      rating: 4.6,
-      reviews: 312,
-      image: "📦",
-      badge: "베스트",
+    accessories: {
+      bg: "bg-pink-50 dark:bg-pink-950",
+      icon: "text-pink-600 dark:text-pink-400",
     },
-    {
-      id: 5,
-      name: "LED 거울",
-      price: "189,000원",
-      originalPrice: "249,000원",
-      rating: 4.9,
-      reviews: 278,
-      image: "🪞",
-      badge: "인기",
-    },
-    {
-      id: 6,
-      name: "수건걸이 세트",
-      price: "29,000원",
-      originalPrice: null,
-      rating: 4.5,
-      reviews: 145,
-      image: "🪣",
-      badge: null,
-    },
-  ];
+  };
+
+  // 카테고리 설명 매핑
+  const categoryDescriptions = {
+    shower: "샤워기, 샤워 헤드, 샤워 커튼",
+    bath: "욕조, 목욕 가구, 욕조 액세서리",
+    sink: "세면대, 수도꼭지, 거울",
+    accessories: "수건걸이, 선반, 수납함",
+  };
+
+  // CATEGORIES 상수와 UI 정보를 결합한 카테고리 데이터
+  const categories = CATEGORIES.map((category) => ({
+    ...category,
+    icon: categoryIcons[category.path as keyof typeof categoryIcons],
+    color: categoryColors[category.path as keyof typeof categoryColors].bg,
+    iconColor:
+      categoryColors[category.path as keyof typeof categoryColors].icon,
+    description:
+      categoryDescriptions[category.path as keyof typeof categoryDescriptions],
+  }));
+
+  // Supabase에서 인기 상품 가져오기
+  const featuredProducts = await getFeaturedProducts(6);
 
   return (
     <main className="min-h-screen">
@@ -158,8 +116,8 @@ export default function Home() {
               const Icon = category.icon;
               return (
                 <Link
-                  key={category.name}
-                  href={`/category/${category.name.toLowerCase()}`}
+                  key={category.path}
+                  href={`/products?category=${category.path}`}
                   className="group"
                 >
                   <div
@@ -169,7 +127,7 @@ export default function Home() {
                       <Icon className="h-12 w-12" />
                     </div>
                     <h3 className="text-xl font-bold mb-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
-                      {category.name}
+                      {category.label}
                     </h3>
                     <p className="text-gray-600 dark:text-gray-400 text-sm">
                       {category.description}
@@ -191,55 +149,29 @@ export default function Home() {
               고객들이 가장 많이 선택한 제품들
             </p>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {featuredProducts.map((product) => (
-              <Link
-                key={product.id}
-                href={`/products/${product.id}`}
-                className="group"
-              >
-                <div className="bg-white dark:bg-gray-900 rounded-2xl p-6 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2">
-                  {product.badge && (
-                    <span className="inline-block bg-blue-600 text-white text-xs font-semibold px-3 py-1 rounded-full mb-3">
-                      {product.badge}
-                    </span>
-                  )}
-                  <div className="text-6xl mb-4 text-center">
-                    {product.image}
-                  </div>
-                  <h3 className="text-xl font-bold mb-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
-                    {product.name}
-                  </h3>
-                  <div className="flex items-center gap-2 mb-3">
-                    <div className="flex items-center">
-                      <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-                      <span className="ml-1 text-sm font-semibold">
-                        {product.rating}
-                      </span>
-                    </div>
-                    <span className="text-sm text-gray-500 dark:text-gray-400">
-                      ({product.reviews}개 리뷰)
-                    </span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <span className="text-2xl font-bold text-blue-600 dark:text-blue-400">
-                      {product.price}
-                    </span>
-                    {product.originalPrice && (
-                      <span className="text-sm text-gray-500 line-through">
-                        {product.originalPrice}
-                      </span>
-                    )}
-                  </div>
-                </div>
-              </Link>
-            ))}
-          </div>
+          {featuredProducts.length > 0 ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {featuredProducts.map((product) => (
+                <ProductCard key={product.id} product={product} />
+              ))}
+            </div>
+          ) : (
+            <div className="text-center py-12">
+              <p className="text-gray-600 dark:text-gray-400 text-lg">
+                등록된 상품이 없습니다.
+              </p>
+              <p className="text-sm text-gray-500 dark:text-gray-500 mt-2">
+                Supabase Dashboard에서 상품을 등록해주세요.
+              </p>
+            </div>
+          )}
           <div className="text-center mt-12">
-            <Button size="lg" variant="outline" className="text-lg px-8">
-              더 많은 제품 보기
-              <ArrowRight className="ml-2 h-5 w-5" />
-            </Button>
+            <Link href="/products">
+              <Button size="lg" variant="outline" className="text-lg px-8">
+                더 많은 제품 보기
+                <ArrowRight className="ml-2 h-5 w-5" />
+              </Button>
+            </Link>
           </div>
         </div>
       </section>
