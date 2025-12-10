@@ -4,7 +4,14 @@
  */
 
 import Link from "next/link";
-import { Facebook, Instagram, Twitter, Mail, Phone, MapPin } from "lucide-react";
+import {
+  Facebook,
+  Instagram,
+  Twitter,
+  Mail,
+  Phone,
+  MapPin,
+} from "lucide-react";
 
 export default function Footer() {
   return (
@@ -15,10 +22,13 @@ export default function Footer() {
           <div>
             <div className="flex items-center gap-2 mb-4">
               <div className="text-2xl">🚿</div>
-              <span className="text-xl font-bold text-white">Bath Essentials</span>
+              <span className="text-xl font-bold text-white">
+                Bath Essentials
+              </span>
             </div>
             <p className="text-sm mb-4">
-              프리미엄 욕실용품으로 당신의 일상을 더욱 편리하고 아름답게 만들어드립니다.
+              프리미엄 욕실용품으로 당신의 일상을 더욱 편리하고 아름답게
+              만들어드립니다.
             </p>
             <div className="flex gap-4">
               <a href="#" className="hover:text-white transition-colors">
@@ -38,22 +48,34 @@ export default function Footer() {
             <h3 className="text-white font-semibold mb-4">쇼핑</h3>
             <ul className="space-y-2 text-sm">
               <li>
-                <Link href="/category/shower" className="hover:text-white transition-colors">
+                <Link
+                  href="/category/shower"
+                  className="hover:text-white transition-colors"
+                >
                   샤워용품
                 </Link>
               </li>
               <li>
-                <Link href="/category/bath" className="hover:text-white transition-colors">
+                <Link
+                  href="/category/bath"
+                  className="hover:text-white transition-colors"
+                >
                   욕조용품
                 </Link>
               </li>
               <li>
-                <Link href="/category/sink" className="hover:text-white transition-colors">
+                <Link
+                  href="/category/sink"
+                  className="hover:text-white transition-colors"
+                >
                   세면대
                 </Link>
               </li>
               <li>
-                <Link href="/category/accessories" className="hover:text-white transition-colors">
+                <Link
+                  href="/category/accessories"
+                  className="hover:text-white transition-colors"
+                >
                   액세서리
                 </Link>
               </li>
@@ -65,22 +87,34 @@ export default function Footer() {
             <h3 className="text-white font-semibold mb-4">고객지원</h3>
             <ul className="space-y-2 text-sm">
               <li>
-                <Link href="/faq" className="hover:text-white transition-colors">
+                <Link
+                  href="/faq"
+                  className="hover:text-white transition-colors"
+                >
                   자주 묻는 질문
                 </Link>
               </li>
               <li>
-                <Link href="/shipping" className="hover:text-white transition-colors">
+                <Link
+                  href="/shipping"
+                  className="hover:text-white transition-colors"
+                >
                   배송 정보
                 </Link>
               </li>
               <li>
-                <Link href="/returns" className="hover:text-white transition-colors">
+                <Link
+                  href="/returns"
+                  className="hover:text-white transition-colors"
+                >
                   반품/교환
                 </Link>
               </li>
               <li>
-                <Link href="/contact" className="hover:text-white transition-colors">
+                <Link
+                  href="/contact"
+                  className="hover:text-white transition-colors"
+                >
                   문의하기
                 </Link>
               </li>
@@ -114,4 +148,3 @@ export default function Footer() {
     </footer>
   );
 }
-

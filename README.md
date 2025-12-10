@@ -32,6 +32,7 @@
 Next.js 15, Clerk, Supabase를 활용한 모던 SaaS 애플리케이션 템플릿입니다.
 
 **핵심 특징:**
+
 - ✨ Next.js 15 + React 19 최신 기능 활용
 - 🔐 Clerk와 Supabase 네이티브 통합 (2025년 권장 방식)
 - 🎨 Tailwind CSS v4 + shadcn/ui
@@ -72,12 +73,14 @@ Next.js 15, Clerk, Supabase를 활용한 모던 SaaS 애플리케이션 템플�
 ## 주요 기능
 
 ### 🔐 인증 시스템
+
 - Clerk를 통한 안전한 사용자 인증
 - 소셜 로그인 지원 (Google 등)
 - Clerk 사용자 자동으로 Supabase DB에 동기화
 - 한국어 UI 지원
 
 ### 🗄️ 데이터베이스 통합
+
 - Clerk 토큰 기반 Supabase 인증 (JWT 템플릿 불필요)
 - 환경별 Supabase 클라이언트 분리:
   - Client Component용 (`useClerkSupabaseClient`)
@@ -86,12 +89,14 @@ Next.js 15, Clerk, Supabase를 활용한 모던 SaaS 애플리케이션 템플�
 - SQL 마이그레이션 시스템
 
 ### 🎨 UI/UX
+
 - shadcn/ui 기반 모던 컴포넌트
 - 완전한 반응형 디자인
 - 다크/라이트 모드 지원 가능
 - 접근성 준수 (WCAG)
 
 ### 🏗️ 아키텍처
+
 - Server Actions 우선 사용
 - 타입 안전성 보장
 - 모듈화된 코드 구조
@@ -168,11 +173,13 @@ npm install -g pnpm
 **3-3. 통합 확인**
 
 통합이 완료되면:
+
 - Clerk 세션 토큰에 `"role": "authenticated"` 클레임이 자동으로 추가됩니다
 - Supabase가 Clerk의 세션 토큰을 검증할 수 있게 됩니다
 - RLS 정책에서 `auth.jwt()->>'sub'`로 Clerk 사용자 ID에 접근할 수 있습니다
 
 **참고 문서:**
+
 - [Clerk 공식 통합 가이드](https://clerk.com/docs/guides/development/integrations/databases/supabase)
 - [Supabase Clerk 통합 문서](https://supabase.com/docs/guides/auth/third-party/clerk)
 
@@ -196,6 +203,7 @@ npm install -g pnpm
 5. 성공 메시지 확인 (`Success. No rows returned`)
 
 **생성되는 테이블:**
+
 - `users`: Clerk 사용자와 동기화되는 사용자 정보 테이블
 
 #### 6. 환경 변수 설정
@@ -218,13 +226,14 @@ cp .env.example .env
 
 1. Supabase Dashboard → **Settings** → **API**
 2. 다음 값들을 복사하여 `.env` 파일에 입력:
+
    ```env
    NEXT_PUBLIC_SUPABASE_URL="<Project URL>"
    NEXT_PUBLIC_SUPABASE_ANON_KEY="<anon public key>"
    SUPABASE_SERVICE_ROLE_KEY="<service_role secret key>"
    NEXT_PUBLIC_STORAGE_BUCKET="uploads"
    ```
-   
+
    > **참고**: 공식 문서에서는 `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`를 사용하지만, 이 프로젝트는 `NEXT_PUBLIC_SUPABASE_ANON_KEY`를 사용합니다. 둘 다 동일한 값입니다.
 
 > **⚠️ 주의**: `service_role` 키는 모든 RLS를 우회하는 관리자 권한이므로 절대 공개하지 마세요!
@@ -286,6 +295,7 @@ pnpm dev
 브라우저에서 [http://localhost:3000](http://localhost:3000)을 열어 확인합니다.
 
 **테스트 페이지:**
+
 - `/instruments`: Supabase 데이터 조회 예제 (공식 문서 패턴)
 - `/auth-test`: Clerk + Supabase 인증 통합 테스트
 - `/storage-test`: Supabase Storage 업로드 테스트
@@ -313,6 +323,7 @@ pnpm lint
 프로젝트에 이미 Clerk 한국어 로컬라이제이션이 적용되어 있습니다. `app/layout.tsx`의 `ClerkProvider`에서 `koKR` locale이 설정되어 있습니다.
 
 **적용된 설정:**
+
 - `@clerk/localizations` 패키지의 `koKR` 사용
 - 모든 Clerk 컴포넌트(SignIn, SignUp, UserButton 등)가 한국어로 표시
 - HTML lang 속성이 "ko"로 설정
@@ -340,6 +351,7 @@ const customKorean = {
 ```
 
 **참고 문서:**
+
 - [Clerk 로컬라이제이션 가이드](https://clerk.com/docs/guides/customizing-clerk/localization)
 - 지원되는 언어 목록 및 커스터마이징 방법 확인 가능
 
@@ -389,24 +401,26 @@ Clerk에서 추가 로그인 방식을 활성화하려면:
 프로젝트에는 Supabase 연결을 테스트할 수 있는 예제 페이지들이 포함되어 있습니다:
 
 - **`/instruments`**: Supabase 공식 Next.js 퀵스타트 가이드 패턴을 따르는 데이터 조회 예제
+
   - Server Component에서 `await createClient()` 사용
   - Suspense를 사용한 비동기 데이터 로딩
   - Supabase의 `instruments` 테이블에서 데이터 조회
-  
+
   > **참고**: 이 페이지를 사용하려면 Supabase에서 `instruments` 테이블을 생성해야 합니다. Supabase Dashboard의 SQL Editor에서 다음 쿼리를 실행하세요:
+  >
   > ```sql
   > CREATE TABLE instruments (
   >   id BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
   >   name TEXT NOT NULL
   > );
-  > 
+  >
   > INSERT INTO instruments (name) VALUES
   >   ('violin'),
   >   ('viola'),
   >   ('cello');
-  > 
+  >
   > ALTER TABLE instruments ENABLE ROW LEVEL SECURITY;
-  > 
+  >
   > CREATE POLICY "public can read instruments"
   > ON public.instruments
   > FOR SELECT TO anon
@@ -475,31 +489,27 @@ saas-template/
 **1. Client Component에서 사용 (인증 필요)**
 
 ```tsx
-'use client';
+"use client";
 
-import { useClerkSupabaseClient } from '@/lib/supabase/clerk-client';
+import { useClerkSupabaseClient } from "@/lib/supabase/clerk-client";
 
 export default function MyComponent() {
   const supabase = useClerkSupabaseClient();
 
   // 데이터 조회 (RLS 정책 적용)
-  const { data, error } = await supabase
-    .from('tasks')
-    .select('*');
+  const { data, error } = await supabase.from("tasks").select("*");
 }
 ```
 
 **2. Server Component에서 사용 (공식 문서 패턴)**
 
 ```tsx
-import { createClient } from '@/lib/supabase/server';
-import { Suspense } from 'react';
+import { createClient } from "@/lib/supabase/server";
+import { Suspense } from "react";
 
 async function DataComponent() {
   const supabase = await createClient();
-  const { data, error } = await supabase
-    .from('tasks')
-    .select('*');
+  const { data, error } = await supabase.from("tasks").select("*");
 
   return <div>...</div>;
 }
@@ -516,15 +526,13 @@ export default function MyPage() {
 **또는 기존 방식 (호환성 유지)**
 
 ```tsx
-import { createClerkSupabaseClient } from '@/lib/supabase/server';
+import { createClerkSupabaseClient } from "@/lib/supabase/server";
 
 export default async function MyPage() {
   const supabase = createClerkSupabaseClient();
 
   // 데이터 조회 (RLS 정책 적용)
-  const { data, error } = await supabase
-    .from('tasks')
-    .select('*');
+  const { data, error } = await supabase.from("tasks").select("*");
 
   return <div>...</div>;
 }
@@ -533,16 +541,14 @@ export default async function MyPage() {
 **3. Server Action에서 사용**
 
 ```ts
-'use server';
+"use server";
 
-import { createClerkSupabaseClient } from '@/lib/supabase/server';
+import { createClerkSupabaseClient } from "@/lib/supabase/server";
 
 export async function addTask(name: string) {
   const supabase = createClerkSupabaseClient();
 
-  const { data, error } = await supabase
-    .from('tasks')
-    .insert({ name });
+  const { data, error } = await supabase.from("tasks").insert({ name });
 
   return data;
 }
@@ -551,19 +557,18 @@ export async function addTask(name: string) {
 **4. 관리자 권한 작업 (RLS 우회)**
 
 ```ts
-import { getServiceRoleClient } from '@/lib/supabase/service-role';
+import { getServiceRoleClient } from "@/lib/supabase/service-role";
 
 export async function POST(req: Request) {
   const supabase = getServiceRoleClient();
 
   // RLS를 우회하여 모든 데이터 접근 가능
-  const { data, error } = await supabase
-    .from('users')
-    .select('*');
+  const { data, error } = await supabase.from("users").select("*");
 }
 ```
 
-**참고**: 
+**참고**:
+
 - `useClerkSupabaseClient()`와 `createClient()`는 Clerk 세션 토큰을 자동으로 포함합니다
 - RLS 정책에서 `auth.jwt()->>'sub'`로 Clerk 사용자 ID에 접근할 수 있습니다
 - 공식 문서 패턴: `/instruments` 페이지에서 `createClient()` 사용 예제를 확인할 수 있습니다
@@ -580,4 +585,4 @@ export async function POST(req: Request) {
 - [Supabase 문서](https://supabase.com/docs)
 - [shadcn/ui 문서](https://ui.shadcn.com/)
 - [Tailwind CSS v4 문서](https://tailwindcss.com/docs)
-"# 1203oz" 
+  "# 1203oz"

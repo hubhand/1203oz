@@ -41,7 +41,8 @@ async function InstrumentsData() {
     return (
       <div className="p-4 bg-yellow-50 dark:bg-yellow-900/20 rounded-lg">
         <p className="text-yellow-600 dark:text-yellow-400">
-          데이터가 없습니다. Supabase에서 instruments 테이블을 생성하고 데이터를 추가해주세요.
+          데이터가 없습니다. Supabase에서 instruments 테이블을 생성하고 데이터를
+          추가해주세요.
         </p>
       </div>
     );
@@ -62,9 +63,9 @@ async function InstrumentsData() {
       </ul>
       <div className="mt-6 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
         <p className="text-sm text-blue-600 dark:text-blue-400">
-          <strong>참고:</strong> 이 데이터는 Supabase의 instruments 테이블에서 가져온
-          것입니다. Supabase Dashboard에서 테이블을 생성하고 데이터를 추가할 수
-          있습니다.
+          <strong>참고:</strong> 이 데이터는 Supabase의 instruments 테이블에서
+          가져온 것입니다. Supabase Dashboard에서 테이블을 생성하고 데이터를
+          추가할 수 있습니다.
         </p>
       </div>
     </div>
@@ -94,4 +95,3 @@ export default function Instruments() {
     </div>
   );
 }
-

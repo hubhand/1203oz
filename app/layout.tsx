@@ -36,17 +36,18 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Bath Essentials - 프리미엄 욕실용품 쇼핑몰",
-  description: "샤워용품, 욕조용품, 세면대 등 프리미엄 욕실용품을 한 곳에서 만나보세요",
+  description:
+    "샤워용품, 욕조용품, 세면대 등 프리미엄 욕실용품을 한 곳에서 만나보세요",
 };
 
 /**
  * Root Layout 컴포넌트
  *
  * Clerk의 모든 컴포넌트(SignIn, SignUp, UserButton 등)가 한국어로 표시됩니다.
- * 
+ *
  * @example
  * 로그인 모달, 회원가입 폼, 사용자 프로필 메뉴 등 모든 Clerk UI가 한국어로 렌더링됩니다.
- * 
+ *
  * 커스텀 번역을 추가하려면:
  * ```tsx
  * const customKorean = {
@@ -56,10 +57,10 @@ export const metadata: Metadata = {
  *     title: "커스텀 로그인 제목",
  *   },
  * };
- * 
+ *
  * <ClerkProvider localization={customKorean}>
  * ```
- * 
+ *
  * 에러 메시지 커스터마이징:
  * ```tsx
  * const customKorean = {
